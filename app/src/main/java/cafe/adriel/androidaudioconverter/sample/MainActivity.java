@@ -4,9 +4,10 @@ import android.Manifest;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
 
@@ -21,11 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setBackgroundDrawable(
-                    new ColorDrawable(getResources().getColor(R.color.colorPrimaryDark)));
-        }
-
         Util.requestPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
         Util.requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
@@ -35,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
          *  Update with a valid audio file!
          *  Supported formats: {@link AndroidAudioConverter.AudioFormat}
          */
-        File wavFile = new File(Environment.getExternalStorageDirectory(), "recorded_audio.wav");
+//        File wavFile = new File(Environment.getExternalStorageDirectory(), "recorded_audio.wav");
+        File file = new File(getFilesDir(), "audio_demo.mp3");
         IConvertCallback callback = new IConvertCallback() {
             @Override
             public void onSuccess(File convertedFile) {
@@ -48,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         };
         Toast.makeText(this, "Converting audio file...", Toast.LENGTH_SHORT).show();
         AndroidAudioConverter.with(this)
-                .setFile(wavFile)
+                .setFile(file)
                 .setFormat(AudioFormat.MP3)
                 .setCallback(callback)
                 .convert();
